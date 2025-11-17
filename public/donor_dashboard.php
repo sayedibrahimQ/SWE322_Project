@@ -1,26 +1,22 @@
 <?php
-// public/donor_dashboard.php (Modernized Version)
-
 $page_title = 'Donor Dashboard';
 $user_type_required = 'donor';
 require_once __DIR__ . '/../includes/header.php';
 
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../classes/Registration.php';
-require_once __DIR__ . '/../classes/BloodRequest.php'; // Needed for count
+require_once __DIR__ . '/../classes/BloodRequest.php'; 
 
 $database = new Database();
 $db = $database->connect();
 
-// Fetch only the data needed for the dashboard summary
 $registration = new Registration($db);
 $request = new BloodRequest($db);
 
 $my_registrations = $registration->readByDonor($_SESSION['user_id']);
-$open_requests_count = $request->countOpen(); // Use the efficient count method
+$open_requests_count = $request->countOpen(); 
 ?>
 
-<!-- Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <div class="container">
@@ -29,7 +25,6 @@ $open_requests_count = $request->countOpen(); // Use the efficient count method
         <p>Your dashboard provides a summary of your activity and opportunities to help.</p>
     </div>
 
-    <!-- Use the premium summary cards from the admin dashboard for a consistent design -->
     <div class="summary-cards">
         <div class="summary-card">
             <div class="icon icon-requests"><i class="fas fa-medkit"></i></div>
@@ -48,7 +43,6 @@ $open_requests_count = $request->countOpen(); // Use the efficient count method
     </div>
 
     <div class="grid-container" style="grid-template-columns: 1fr 1fr;">
-        <!-- Card for Navigating to Actions -->
         <div class="card">
             <h2>Make a Difference</h2>
             <p>Browse detailed lists of urgent needs and upcoming community drives. Your next donation could be a lifeline.</p>
@@ -62,13 +56,11 @@ $open_requests_count = $request->countOpen(); // Use the efficient count method
             </div>
         </div>
         
-        <!-- Card for "My Registrations" -->
         <div class="card">
             <h2>My Registrations</h2>
             <div id="my-registrations-list">
                 <?php if ($my_registrations->rowCount() > 0): ?>
                     <?php 
-                    // Rewind the statement to loop through it again
                     $my_registrations->execute(); 
                     while ($row = $my_registrations->fetch(PDO::FETCH_ASSOC)): ?>
                         <div class="item">

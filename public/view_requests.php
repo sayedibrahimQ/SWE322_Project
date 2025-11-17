@@ -1,6 +1,6 @@
 <?php
 $page_title = 'View Blood Requests';
-$user_type_required = 'donor'; // Security: only donors can see this page
+$user_type_required = 'donor'; 
 require_once __DIR__ . '/../includes/header.php';
 
 require_once __DIR__ . '/../config/Database.php';
@@ -10,7 +10,6 @@ require_once __DIR__ . '/../classes/DonorResponse.php';
 $database = new Database();
 $db = $database->connect();
 
-// --- HANDLE DONOR RESPONSE FORM SUBMISSION ---
 $form_message = '';
 $form_message_type = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'respond_to_request') {
@@ -22,18 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $form_message = "Your response has been sent to the hospital. Thank you for your generosity!";
         $form_message_type = 'success';
     } else {
-        // hasAlreadyResponded() in the create() method prevents duplicates
         $form_message = "You have already responded to this request, or there was an error.";
         $form_message_type = 'error';
     }
 }
 
-// --- FETCH ALL OPEN REQUESTS ---
 $request = new BloodRequest($db);
 $open_requests = $request->readOpenRequests();
 ?>
 
-<!-- Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <div class="container">
@@ -52,7 +48,6 @@ $open_requests = $request->readOpenRequests();
         </div>
     </div>
 
-    <!-- Display response message -->
     <?php if ($form_message): ?>
         <div class="alert alert-<?php echo $form_message_type; ?>">
             <?php echo htmlspecialchars($form_message); ?>
@@ -81,7 +76,6 @@ $open_requests = $request->readOpenRequests();
     </div>
 </div>
 
-<!-- Confirmation Modal -->
 <div id="confirmationModal" class="modal">
     <div class="modal-content">
         <h2>Confirm Your Offer</h2>
@@ -99,7 +93,6 @@ $open_requests = $request->readOpenRequests();
 </div>
 
 <script>
-    // --- JavaScript for Live Filtering ---
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         const bloodTypeFilter = document.getElementById('bloodTypeFilter');
@@ -129,7 +122,6 @@ $open_requests = $request->readOpenRequests();
         bloodTypeFilter.addEventListener('change', filterRequests);
     });
 
-    // --- JavaScript for Confirmation Modal ---
     const modal = document.getElementById('confirmationModal');
     
     function openConfirmationModal(requestId, hospitalName, bloodType) {
@@ -143,7 +135,6 @@ $open_requests = $request->readOpenRequests();
         modal.style.display = 'none';
     }
 
-    // Close modal if user clicks outside of the content
     window.onclick = function(event) {
         if (event.target == modal) {
             closeConfirmationModal();

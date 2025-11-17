@@ -1,11 +1,8 @@
 <?php
-// public/manage_approvals.php
-
 $page_title = 'Manage Hospital Approvals';
-$user_type_required = 'admin'; // Security check
+$user_type_required = 'admin'; 
 require_once __DIR__ . '/../includes/header.php';
 
-// Include necessary class files
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../classes/Admin.php';
 
@@ -14,23 +11,19 @@ $db = $database->connect();
 
 $admin = new Admin($db);
 
-// --- HANDLE HOSPITAL APPROVAL FORM SUBMISSION ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'approve_hospital') {
     $hospital_id_to_approve = $_POST['hospital_id'];
     if ($admin->approveHospital($hospital_id_to_approve)) {
-        // Use a session flash message for success
         $_SESSION['form_message'] = "Hospital has been successfully approved!";
         $_SESSION['form_message_type'] = "success";
     } else {
         $_SESSION['form_message'] = "Failed to approve the hospital. It may have already been approved or an error occurred.";
         $_SESSION['form_message_type'] = "error";
     }
-    // Redirect to the same page to show the updated list and message
     header("Location: manage_approvals.php");
     exit();
 }
 
-// Check for and display flash messages
 $form_message = '';
 if (isset($_SESSION['form_message'])) {
     $form_message = $_SESSION['form_message'];
@@ -38,12 +31,9 @@ if (isset($_SESSION['form_message'])) {
     unset($_SESSION['form_message'], $_SESSION['form_message_type']);
 }
 
-// --- FETCH DATA FOR DISPLAY ---
-// Get all hospitals waiting for approval
 $pending_hospitals = $admin->getPendingHospitals();
 ?>
 
-<!-- Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <div class="container">
@@ -57,7 +47,6 @@ $pending_hospitals = $admin->getPendingHospitals();
         </div>
     </div>
     
-    <!-- Display form submission messages -->
     <?php if ($form_message): ?>
         <div class="alert alert-<?php echo $form_message_type; ?>">
             <?php echo htmlspecialchars($form_message); ?>

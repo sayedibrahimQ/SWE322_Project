@@ -11,24 +11,19 @@ $database = new Database();
 $db = $database->connect();
 $request = new BloodRequest($db);
 
-// Get request ID from URL parameter
 $request->request_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Check if this donor has already responded to this request
 $response = new DonorResponse($db);
 $response->donor_id = $_SESSION['user_id'];
 $response->request_id = $request->request_id;
 $has_responded = $response->hasAlreadyResponded();
 
-// Fetch the single request details
 if (!$request->readOne() || $request->status !== 'open') {
-    // If request not found or is no longer open, show an error and stop
     echo "<div class='container'><div class='page-header'><h1>Request Not Available</h1><p>This blood request may have been fulfilled or cancelled. <a href='view_requests.php'>View other requests</a>.</p></div></div>";
-    require_once __DIR__ . '/../includes/footer.php'; // Assuming you create a footer file
+    require_once __DIR__ . '/../includes/footer.php'; 
     exit();
 }
 
-// URL-encode the address for the map query
 $map_query = urlencode($request->hospital_address);
 ?>
 
@@ -103,7 +98,6 @@ $map_query = urlencode($request->hospital_address);
 document.addEventListener('DOMContentLoaded', function() {
     const confirmBtn = document.getElementById('confirmBtn');
     
-    // If the button doesn't exist (because user already responded), stop the script.
     if (!confirmBtn) return;
 
     const messageContainer = document.getElementById('ajax-message-container');
@@ -142,7 +136,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function showMessage(message, type) {
         messageContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
-        // Message will stay until the user navigates away
     }
 });
 </script>

@@ -1,46 +1,34 @@
 <?php
-// public/create_request.php
-
 $page_title = 'Post New Blood Request';
-$user_type_required = 'hospital'; // Security check
+$user_type_required = 'hospital'; 
 require_once __DIR__ . '/../includes/header.php';
 
-// Include necessary class files
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../classes/BloodRequest.php';
 
-// --- HANDLE FORM SUBMISSION ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
     
-    // Instantiate BloodRequest object
     $request = new BloodRequest($db);
 
-    // Assign properties from the form and session
     $request->hospital_id = $_SESSION['user_id'];
     $request->blood_type_needed = $_POST['blood_type'];
     $request->urgency_level = $_POST['urgency'];
 
-    // Attempt to create the request
     if ($request->create()) {
-        // Use a session "flash message" to show success on the dashboard after redirecting
         $_SESSION['form_message'] = "Urgent blood request was successfully posted!";
         $_SESSION['form_message_type'] = "success";
     } else {
-        // Set an error flash message
         $_SESSION['form_message'] = "There was an error posting your request. Please try again.";
         $_SESSION['form_message_type'] = "error";
     }
 
-    // Redirect to the dashboard to prevent form re-submission on refresh
     header("Location: hospital_dashboard.php");
     exit();
 }
 ?>
 
-<!-- We need Font Awesome for the icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <div class="form-page-container">

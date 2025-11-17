@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blood Donation Management System</title>
     
-    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
     <style>
-        /* --- General Styling & Reset --- */
         :root {
             --primary-color: #c0392b;
             --secondary-color: #e74c3c;
@@ -48,7 +45,6 @@
             color: var(--primary-color);
         }
 
-        /* --- Header & Navigation --- */
         .main-header {
             background: var(--white-color);
             padding: 1rem 0;
@@ -109,7 +105,6 @@
         .btn-primary { background-color: var(--primary-color); }
         .btn-secondary { background-color: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); }
         
-        /* --- Hero Section --- */
         .hero {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1524721696987-b9527df9e512?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
             height: 85vh;
@@ -133,7 +128,6 @@
             max-width: 600px;
         }
         
-        /* --- How It Works Section --- */
         .info-section {
             padding: 4rem 0;
             text-align: center;
@@ -171,7 +165,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* --- Stats Section --- */
         .stats-section {
             background-color: var(--light-color);
             padding: 4rem 0;
@@ -191,7 +184,6 @@
             font-weight: 500;
         }
         
-        /* --- Footer --- */
         .main-footer {
             background-color: var(--dark-color);
             color: var(--white-color);
@@ -199,12 +191,11 @@
             padding: 2rem 0;
         }
 
-        /* --- Responsive Design --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .hero p { font-size: 1rem; }
             .steps-grid, .stats-grid { grid-template-columns: 1fr; }
-            .main-nav ul { display: none; } /* Simple hide for mobile, can be replaced with a burger menu */
+            .main-nav ul { display: none; } 
             .main-header .container { justify-content: center; }
             .main-header .logo { margin-bottom: 1rem; }
         }
@@ -213,7 +204,6 @@
 </head>
 <body>
 
-    <!-- Header -->
     <header class="main-header">
         <div class="container">
             <a href="index.php" class="logo"><i class="fas fa-hand-holding-medical"></i> VitalFlow</a>
@@ -221,7 +211,6 @@
                 <ul>
                     <li><a href="index.php">Home</a></li>
                     <li><a href="#how-it-works">How It Works</a></li>
-                    <!-- We will create these pages later -->
                     <li><a href="#">Find a Drive</a></li> 
                     <li><a href="#">Contact</a></li>
                     <li><a href="public/login.php" class="btn btn-secondary">Login</a></li>
@@ -231,16 +220,13 @@
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
-        <!-- Hero Section -->
         <section class="hero">
             <h1>Donate Blood, Save Lives</h1>
             <p>Your single donation can help save up to three lives. Join our community of heroes today and make a real difference.</p>
             <a href="public/register.php" class="btn btn-primary">Become a Donor</a>
         </section>
 
-        <!-- How It Works Section -->
         <section id="how-it-works" class="info-section">
             <div class="container">
                 <h2>A Simple Process to Save Lives</h2>
@@ -265,7 +251,6 @@
             </div>
         </section>
 
-        <!-- Statistics Section -->
         <section class="stats-section">
             <div class="container">
                 <div class="stats-grid">
@@ -286,7 +271,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="main-footer">
         <p>&copy; 2024 Blood Donation Management System. All Rights Reserved.</p>
     </footer>

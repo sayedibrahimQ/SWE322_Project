@@ -1,6 +1,6 @@
 <?php
 $page_title = 'Find a Blood Drive';
-$user_type_required = 'donor'; // Security: only donors can see this page
+$user_type_required = 'donor'; 
 require_once __DIR__ . '/../includes/header.php';
 
 require_once __DIR__ . '/../config/Database.php';
@@ -10,7 +10,6 @@ require_once __DIR__ . '/../classes/Registration.php';
 $database = new Database();
 $db = $database->connect();
 
-// --- HANDLE DONOR REGISTRATION FORM SUBMISSION ---
 $form_message = '';
 $form_message_type = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'register_for_drive') {
@@ -22,18 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         $form_message = "Successfully registered for the drive! We look forward to seeing you there.";
         $form_message_type = 'success';
     } else {
-        // isAlreadyRegistered() in create() method prevents duplicates
         $form_message = "You have already registered for this drive, or there was an error.";
         $form_message_type = 'error';
     }
 }
 
-// --- FETCH ALL UPCOMING DRIVES ---
 $drive = new BloodDrive($db);
 $upcoming_drives = $drive->readUpcoming();
 ?>
 
-<!-- Font Awesome for Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
 <div class="container">
@@ -45,7 +41,6 @@ $upcoming_drives = $drive->readUpcoming();
         </div>
     </div>
 
-    <!-- Display response message -->
     <?php if ($form_message): ?>
         <div class="alert alert-<?php echo $form_message_type; ?>">
             <?php echo htmlspecialchars($form_message); ?>
@@ -80,7 +75,6 @@ $upcoming_drives = $drive->readUpcoming();
     </div>
 </div>
 
-<!-- Confirmation Modal -->
 <div id="confirmationModal" class="modal">
     <div class="modal-content">
         <h2>Confirm Registration</h2>
@@ -97,7 +91,6 @@ $upcoming_drives = $drive->readUpcoming();
 </div>
 
 <script>
-    // --- JavaScript for Live Filtering ---
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         const driveCards = document.querySelectorAll('.drive-card');
@@ -116,7 +109,6 @@ $upcoming_drives = $drive->readUpcoming();
         });
     });
 
-    // --- JavaScript for Confirmation Modal ---
     const modal = document.getElementById('confirmationModal');
     
     function openConfirmationModal(driveId, driveName) {
@@ -129,7 +121,6 @@ $upcoming_drives = $drive->readUpcoming();
         modal.style.display = 'none';
     }
 
-    // Close modal if user clicks outside of the content
     window.onclick = function(event) {
         if (event.target == modal) {
             closeConfirmationModal();

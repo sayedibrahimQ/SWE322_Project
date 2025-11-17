@@ -1,29 +1,19 @@
 <?php
-// This block of PHP code will handle the form submission
-$message = ''; // Variable to store success or error messages
+$message = ''; 
 
-// Check if the form was submitted by checking the request method
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    // Include the necessary class files. The path is relative to this file's location.
-    // Using __DIR__ makes the paths more reliable.
     require_once __DIR__ . '/../config/Database.php';
     require_once __DIR__ . '/../classes/Donor.php';
     require_once __DIR__ . '/../classes/Hospital.php';
 
-    // 1. Establish Database Connection
     $database = new Database();
     $db = $database->connect();
 
-    // 2. Get the user type from the form
     $user_type = $_POST['user_type'] ?? '';
 
-    // 3. Process registration based on user type
     if ($user_type === 'donor') {
-        // --- DONOR REGISTRATION ---
         $donor = new Donor($db);
         
-        // Assign post data to donor object properties
         $donor->full_name = $_POST['donor_name'];
         $donor->email = $_POST['donor_email'];
         $donor->password = $_POST['donor_password'];
@@ -31,27 +21,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $donor->phone = $_POST['donor_phone'];
         $donor->city = $_POST['donor_city'];
 
-        // Attempt to register the donor
         if ($donor->register()) {
             $message = "Donor registration successful! You can now login.";
         } else {
-            // The register() method returns false if email exists or on DB error
             $message = "Registration failed. The email address may already be in use.";
         }
 
     } elseif ($user_type === 'hospital') {
-        // --- HOSPITAL REGISTRATION ---
         $hospital = new Hospital($db);
 
-        // Assign post data to hospital object properties
         $hospital->hospital_name = $_POST['hospital_name'];
         $hospital->email = $_POST['hospital_email'];
         $hospital->password = $_POST['hospital_password'];
         $hospital->phone = $_POST['hospital_phone'];
         $hospital->address = $_POST['hospital_address'];
-        $hospital->city = $_POST['hospital_city']; // Note: We need a city field for hospitals too. Added to form.
+        $hospital->city = $_POST['hospital_city'];
 
-        // Attempt to register the hospital
         if ($hospital->register()) {
             $message = "Hospital registration successful! Your account will be active after admin approval.";
         } else {
@@ -92,7 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div class="container">
     <h2>Create an Account</h2>
 
-    <!-- Display Success or Error Messages Here -->
     <?php if (!empty($message)): ?>
         <div class="message <?php echo strpos($message, 'successful') !== false ? 'success' : 'error'; ?>">
             <?php echo $message; ?>
@@ -104,8 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label><input type="radio" name="user_type" value="donor" id="donor_radio" required checked> Register as a Donor</label>
             <label><input type="radio" name="user_type" value="hospital" id="hospital_radio" required> Register as a Hospital</label>
         </div>
-
-        <!-- Fields for Donor -->
+        
         <div id="donor_fields">
             <div class="form-group">
                 <label for="donor_name">Full Name</label>
@@ -139,7 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
 
-        <!-- Fields for Hospital (initially hidden) -->
         <div id="hospital_fields" style="display: none;">
             <div class="form-group">
                 <label for="hospital_name">Hospital Name</label>
@@ -175,7 +157,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </div>
 
 <script>
-    // JavaScript to toggle between donor and hospital forms
     document.addEventListener('DOMContentLoaded', function () {
         const donorRadio = document.getElementById('donor_radio');
         const hospitalRadio = document.getElementById('hospital_radio');
@@ -185,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function toggleFields() {
             if (donorRadio.checked) {
                 donorFields.style.display = 'block';
-                // Make donor fields required and hospital fields not
                 donorFields.querySelectorAll('input, select').forEach(el => el.required = true);
                 hospitalFields.style.display = 'none';
                 hospitalFields.querySelectorAll('input, textarea').forEach(el => el.required = false);
@@ -200,7 +180,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         donorRadio.addEventListener('change', toggleFields);
         hospitalRadio.addEventListener('change', toggleFields);
 
-        // Initial check on page load
         toggleFields();
     });
 </script>

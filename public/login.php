@@ -1,8 +1,6 @@
 <?php
-// Start the session at the very beginning
 session_start();
 
-// If the user is already logged in, redirect them to their dashboard
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_type'] === 'donor') {
         header("Location: donor_dashboard.php");
@@ -16,9 +14,7 @@ if (isset($_SESSION['user_id'])) {
 
 $message = '';
 
-// Check if the form was submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Include required files
     require_once __DIR__ . '/../config/Database.php';
     require_once __DIR__ . '/../classes/User.php';
     require_once __DIR__ . '/../classes/Donor.php';
@@ -29,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $db = $database->connect();
 
     $user_type = $_POST['user_type'] ?? '';
-    $login_identifier = $_POST['login_identifier'] ?? ''; // Changed from 'email'
+    $login_identifier = $_POST['login_identifier'] ?? ''; 
     $password = $_POST['password'] ?? '';
 
     $user_instance = null;
@@ -43,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($user_instance) {
-        // We use the 'email' property in the parent User class to hold the login identifier
         $user_instance->email = $login_identifier;
         $user_instance->password = $password;
 
@@ -77,12 +72,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Blood Donation System</title>
     
-    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
 
     <style>
@@ -144,8 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: 1px solid #ddd; border-radius: 8px;
             font-size: 1rem; font-family: 'Poppins', sans-serif;
         }
-        .form-group select { padding-left: 15px; } /* No icon for select */
-
+        .form-group select { padding-left: 15px; } 
         button {
             width: 100%; padding: 15px; background: var(--primary-color);
             color: var(--white-color); border: none; border-radius: 8px;
@@ -158,10 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .register-link { text-align: center; margin-top: 25px; color: #555; }
         .register-link a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
 
-        /* Responsive Design */
         @media (max-width: 850px) {
             .login-container { grid-template-columns: 1fr; }
-            .login-image-panel { display: none; } /* Hide image on smaller screens for focus */
+            .login-image-panel { display: none; } 
             .login-form-panel { height: 100vh; }
         }
     </style>
@@ -194,7 +185,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="form-group">
                     <div class="input-wrapper">
                         <i class="fas fa-envelope"></i>
-                        <!-- IMPORTANT: Changed name to login_identifier and type to text for admin login flexibility -->
                         <input type="text" name="login_identifier" placeholder="Email (or Username for Admin)" required>
                     </div>
                 </div>

@@ -1,47 +1,35 @@
 <?php
-// public/create_drive.php
-
 $page_title = 'Schedule New Blood Drive';
-$user_type_required = 'hospital'; // Security check
+$user_type_required = 'hospital'; 
 require_once __DIR__ . '/../includes/header.php';
 
-// Include necessary class files
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../classes/BloodDrive.php';
 
-// --- HANDLE FORM SUBMISSION ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Instantiate DB & connect
     $database = new Database();
     $db = $database->connect();
     
-    // Instantiate BloodDrive object
     $drive = new BloodDrive($db);
 
-    // Assign properties from the form and session
     $drive->hospital_id = $_SESSION['user_id'];
     $drive->drive_name = $_POST['drive_name'];
     $drive->location_address = $_POST['location_address'];
     $drive->start_time = $_POST['start_time'];
     $drive->description = $_POST['description'];
 
-    // Attempt to create the drive
     if ($drive->create()) {
-        // Use a session "flash message" for success
         $_SESSION['form_message'] = "Your blood drive has been successfully scheduled!";
         $_SESSION['form_message_type'] = "success";
     } else {
-        // Set an error flash message
         $_SESSION['form_message'] = "There was an error scheduling your blood drive. Please check your inputs and try again.";
         $_SESSION['form_message_type'] = "error";
     }
 
-    // Redirect to the dashboard to show the result and prevent re-submission
     header("Location: hospital_dashboard.php");
     exit();
 }
 
-// Get the current date and time in the correct format for the datetime-local input min attribute
 $min_datetime = date('Y-m-d\TH:i');
 ?>
 

@@ -1,5 +1,4 @@
 <?php
-// public/logout.php
 
 // 1. Start the session
 // This is necessary to access and manipulate the session.
@@ -17,7 +16,5 @@ session_destroy();
 // After logging out, the user is sent back to the login page.
 // You could also redirect to the homepage: header("Location: ../index.php");
 header("Location: login.php");
-
-// 5. Ensure no further code is executed after the redirect
 exit();
 ?>

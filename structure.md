@@ -32,4 +32,3 @@ blood_donation_system/
 ├── includes/
 │   ├── header.php            # Common HTML head, navigation bar
 │   └── footer.php            # Common HTML footer, scripts
-│
